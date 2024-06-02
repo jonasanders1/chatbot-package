@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed, defineProps } from "vue";
 
 const messages = ref([
   {
@@ -51,6 +51,7 @@ const messages = ref([
     sender: "user",
   },
 ]);
+
 const userInput = ref("");
 const isOpen = ref(true);
 
@@ -63,8 +64,7 @@ const props = defineProps({
 
 const handleToggleChat = () => {
   isOpen.value = !isOpen.value;
-}
-
+};
 
 const sendMessage = () => {
   if (userInput.value.trim() !== "") {
@@ -94,52 +94,113 @@ const userMessageStyles = {
   backgroundColor: props.primaryColor,
   color: "#fff",
 };
+
+// Computed property to check if the textarea is empty
+const isTextareaEmpty = computed(() => userInput.value.trim() === "");
 </script>
 
 <template>
-  <div class="chatbot" v-if="isOpen">
-    <div
-      class="chatbot__header"
-      :style="{ backgroundColor: props.primaryColor }"
-    >
-      <h1 class="header-title">{{ props.title ? props.title : "Chatbot" }}</h1>
-      <div class="header-buttons">
-        <button @click="handleToggleChat">close</button>
-      </div>
-    </div>
-    <div class="chatbot__messages">
+  <div class="chatbot-wrapper">
+    <div class="chatbot" v-if="isOpen">
       <div
-        v-for="message in messages"
-        :key="message.id"
-        :class="['message', message.sender]"
-        :style="
-          message.sender === 'user' ? userMessageStyles : botMessageStyles
-        "
+        class="chatbot__header"
+        :style="{ backgroundColor: props.primaryColor }"
       >
-        {{ message.text }}
+        <h1 class="header-title">
+          {{ props.title ? props.title : "Chatbot" }}
+        </h1>
+        <div class="header-buttons">
+          <button @click="handleToggleChat">close</button>
+        </div>
+      </div>
+      <div class="chatbot__messages">
+        <div
+          v-for="message in messages"
+          :key="message.id"
+          :class="['message', message.sender]"
+          :style="
+            message.sender === 'user' ? userMessageStyles : botMessageStyles
+          "
+        >
+          {{ message.text }}
+        </div>
+      </div>
+
+      <div class="chatbot__input">
+        <div
+          class="input-wrapper"
+          :style="{ backgroundColor: props.botMsgColor }"
+        >
+          <textarea
+            type="text"
+            v-model="userInput"
+            @keyup.enter="sendMessage"
+            placeholder="Type a message"
+          />
+        </div>
+        <button v-show="userInput.trim() !== ''" class="input-button">
+          <svg
+            width="30px"
+            height="30px"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M20 12L4 4L6 12M20 12L4 20L6 12M20 12H6"
+              :stroke="props.primaryColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
       </div>
     </div>
-    <div class="chatbot__input">
-      <div
-        class="input-wrapper"
-        :style="{ border: '2px solid ' + props.primaryColor }"
+    <div class="open-chatbot">
+      <button
+        @click="handleToggleChat"
+        class="open-chat-btn"
+        :style="{
+          backgroundColor: props.primaryColor,
+          opacity: isOpen ? 1 : 0.8,
+        }"
       >
-        <textarea
-          type="text"
-          v-model="userInput"
-          @keyup.enter="sendMessage"
-          placeholder="Type a message"
-        />
-        <button>Ask</button>
-      </div>
+        <svg
+          width="40px"
+          height="40px"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 12V15M12 9H12.01M21.0039 12C21.0039 16.9706 16.9745 21 12.0039 21C9.9675 21 3.00463 21 3.00463 21C3.00463 21 4.56382 17.2561 3.93982 16.0008C3.34076 14.7956 3.00391 13.4372 3.00391 12C3.00391 7.02944 7.03334 3 12.0039 3C16.9745 3 21.0039 7.02944 21.0039 12Z"
+            :stroke="props.botMsgColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
     </div>
-  </div>
-  <div v-else>
-    <button @click="handleToggleChat">Open</button>
   </div>
 </template>
 
 <style scoped>
+/* Wrappers */
+.chatbot-wrapper {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 1rem;
+  border: 2px solid green;
+}
+
 .chatbot {
   background-color: white;
   display: flex;
@@ -186,43 +247,52 @@ const userMessageStyles = {
 /* INPUT */
 .chatbot__input {
   padding: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
 }
 .input-wrapper {
   display: flex;
   padding: 0.5rem;
-  border-radius: 1rem;
+  border-radius: 2rem;
+  flex: 1;
   gap: 1rem;
+  transition: all 200ms ease;
+  position: relative;
 }
 .input-wrapper textarea {
-  flex: 1;
+  height: 18px;
+  width: 100%;
+  outline: none;
   border: none;
-  height: auto;
   resize: none;
+  background-color: inherit;
 }
 .input-wrapper textarea:focus {
   outline: none;
+  border: none;
+  resize: none;
 }
-/* .messages {
-  flex: 1;
-  max-height: 200px;
-  overflow-y: auto;
-  margin-bottom: 10px;
+
+.input-button {
+  border: none;
+  background-color: inherit;
 }
-.message {
-  padding: 1rem;
+
+/* OPEN CHATBOT */
+.open-chatbot {
+  height: 70px;
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  overflow: hidden;
 }
-.user {
-  background-color: #7890e8;
-  text-align: right;
+.open-chat-btn {
+  border-radius: 50%;
+  border: none;
+  height: 100%;
+  width: 100%;
+  transition: opacity all ease;
 }
-.bot {
-  background-color: #828282;
-  text-align: left;
-}
-input {
-  width: calc(100% - 20px);
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-} */
 </style>
