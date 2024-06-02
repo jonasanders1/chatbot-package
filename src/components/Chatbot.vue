@@ -53,7 +53,8 @@ const messages = ref([
 ]);
 
 const userInput = ref("");
-const isOpen = ref(true);
+const isOpen = ref(false);
+const loading = ref(false);
 
 const props = defineProps({
   title: String,
@@ -77,12 +78,16 @@ const sendMessage = () => {
     messages.value.push(userMessage);
     userInput.value = "";
 
-    const botResponse = {
-      id: Date.now(),
-      text: "Hello Jonas! This is just a test message.",
-      sender: "bot",
-    };
-    messages.value.push(botResponse);
+    setTimeout(() => {
+      const botResponse = {
+        id: Date.now(),
+        text: "Hello Jonas! This is just a test message.",
+        sender: "bot",
+      };
+
+      messages.value.push(botResponse);
+      loading.value = false; // Set loading state to false
+    }, 2000); // 2 seconds delay to simulate fetch request
   }
 };
 
@@ -100,7 +105,7 @@ const isTextareaEmpty = computed(() => userInput.value.trim() === "");
 </script>
 
 <template>
-  <div class="chatbot-wrapper">
+  <div class="chatbot-wrapper" :class="isOpen ? 'open' : 'closed'">
     <div class="chatbot" v-if="isOpen">
       <div
         class="chatbot__header"
@@ -192,13 +197,18 @@ const isTextareaEmpty = computed(() => userInput.value.trim() === "");
   position: fixed;
   right: 0;
   bottom: 0;
-  padding: 1rem;
+  margin: 1rem;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-end;
   gap: 1rem;
-  border: 2px solid green;
+}
+.chatbot-wrapper.open{
+  inset: 0;
+  margin: 0px;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .chatbot {

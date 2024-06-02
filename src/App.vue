@@ -3,7 +3,7 @@ import Chatbot from "./components/Chatbot.vue";
 </script>
 
 <template>
-  <div style="padding: 20px; color: white">
+  <div style="padding: 20px; color: black">
     <h1>
       Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla, laborum.
     </h1>
@@ -21,7 +21,7 @@ import Chatbot from "./components/Chatbot.vue";
       reiciendis dignissimos praesentium quam!
     </p>
   </div>
-  <div style="padding: 20px; color: white">
+  <div style="padding: 20px; color: black">
     <h1>
       Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla, laborum.
     </h1>
@@ -39,7 +39,7 @@ import Chatbot from "./components/Chatbot.vue";
       reiciendis dignissimos praesentium quam!
     </p>
   </div>
-  <div style="padding: 20px; color: white">
+  <div style="padding: 20px; color: black">
     <h1>
       Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla, laborum.
     </h1>
@@ -57,7 +57,7 @@ import Chatbot from "./components/Chatbot.vue";
       reiciendis dignissimos praesentium quam!
     </p>
   </div>
-  <div style="padding: 20px; color: white">
+  <div style="padding: 20px; color: black">
     <h1>
       Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla, laborum.
     </h1>

@@ -1,6 +1,6 @@
 {
   "name": "@jonasanders1/consulting-chatbot",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A simple Vue 3 chatbot component",
   "main": "dist/chatbot.umd.js",
   "module": "dist/chatbot.es.js",
