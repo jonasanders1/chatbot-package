@@ -1,56 +1,9 @@
 <script setup>
 import { ref, computed, defineProps } from "vue";
 
-const messages = ref([
-  {
-    id: Date.now(),
-    text: "What is the weather like today in Oslo?",
-    sender: "user",
-  },
-  {
-    id: Date.now() + 1,
-    text: "Can you help me debug my JavaScript code?",
-    sender: "bot",
-  },
-  { id: Date.now() + 2, text: "How do I center a div in CSS?", sender: "bot" },
-  {
-    id: Date.now() + 3,
-    text: "What are the best exercises for building upper body strength?",
-    sender: "user",
-  },
-  {
-    id: Date.now() + 4,
-    text:
-      "Can you suggest some good resources for learning frontend development?",
-    sender: "bot",
-  },
-  {
-    id: Date.now() + 5,
-    text: "How do I optimize my website for better performance?",
-    sender: "user",
-  },
-  {
-    id: Date.now() + 6,
-    text: "What are some healthy meal options for someone who works out a lot?",
-    sender: "bot",
-  },
-  {
-    id: Date.now() + 7,
-    text: "How do I prepare for my frontend development exams?",
-    sender: "user",
-  },
-  {
-    id: Date.now() + 8,
-    text:
-      "Can you explain the difference between let, var, and const in JavaScript?",
-    sender: "bot",
-  },
-  {
-    id: Date.now() + 9,
-    text: "What are some effective time management strategies for students?",
-    sender: "user",
-  },
-]);
+import ChatbotMessageScreen from "./ChatbotMessageScreen.vue";
+import Header from "./Header.vue";
+import UserInput from "./UserInput.vue";
 
 const userInput = ref("");
 const isOpen = ref(false);
@@ -61,10 +14,15 @@ const props = defineProps({
   primaryColor: String,
   secondaryColor: String,
   botMsgColor: String,
+  messages: Array,
 });
 
 const handleToggleChat = () => {
   isOpen.value = !isOpen.value;
+};
+
+const handleInputChange = (value) => {
+  userInput.value = value;
 };
 
 const sendMessage = () => {
@@ -75,7 +33,7 @@ const sendMessage = () => {
       sender: "user",
     };
 
-    messages.value.push(userMessage);
+    props.messages.push(userMessage);
     userInput.value = "";
 
     setTimeout(() => {
@@ -85,10 +43,15 @@ const sendMessage = () => {
         sender: "bot",
       };
 
-      messages.value.push(botResponse);
+      props.messages.push(botResponse);
       loading.value = false; // Set loading state to false
     }, 2000); // 2 seconds delay to simulate fetch request
   }
+};
+
+const headerStyles = {
+  backgroundColor: "#333",
+  color: "#fff",
 };
 
 const botMessageStyles = {
@@ -107,61 +70,23 @@ const isTextareaEmpty = computed(() => userInput.value.trim() === "");
 <template>
   <div class="chatbot-wrapper" :class="isOpen ? 'open' : 'closed'">
     <div class="chatbot" v-if="isOpen">
-      <div
-        class="chatbot__header"
-        :style="{ backgroundColor: props.primaryColor }"
-      >
-        <h1 class="header-title">
-          {{ props.title ? props.title : "Chatbot" }}
-        </h1>
-        <div class="header-buttons">
-          <button @click="handleToggleChat">close</button>
-        </div>
-      </div>
-      <div class="chatbot__messages">
-        <div
-          v-for="message in messages"
-          :key="message.id"
-          :class="['message', message.sender]"
-          :style="
-            message.sender === 'user' ? userMessageStyles : botMessageStyles
-          "
-        >
-          {{ message.text }}
-        </div>
-      </div>
-
-      <div class="chatbot__input">
-        <div
-          class="input-wrapper"
-          :style="{ backgroundColor: props.botMsgColor }"
-        >
-          <textarea
-            type="text"
-            v-model="userInput"
-            @keyup.enter="sendMessage"
-            placeholder="Type a message"
-          />
-        </div>
-        <button v-show="userInput.trim() !== ''" class="input-button">
-          <svg
-            width="30px"
-            height="30px"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M20 12L4 4L6 12M20 12L4 20L6 12M20 12H6"
-              :stroke="props.primaryColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </button>
-      </div>
+      <Header
+        :title="title"
+        :headerStyles="headerStyles"
+        @toggleChat="handleToggleChat"
+      />
+      <ChatbotMessageScreen
+        :messages="props.messages"
+        :botMessageStyles="botMessageStyles"
+        :userMessageStyles="userMessageStyles"
+      />
+      <UserInput
+        :userInput="userInput"
+        @sendMessage="sendMessage"
+        @input="handleInputChange"
+      />
     </div>
+
     <div class="open-chatbot">
       <button
         @click="handleToggleChat"
@@ -171,21 +96,7 @@ const isTextareaEmpty = computed(() => userInput.value.trim() === "");
           opacity: isOpen ? 1 : 0.8,
         }"
       >
-        <svg
-          width="40px"
-          height="40px"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M12 12V15M12 9H12.01M21.0039 12C21.0039 16.9706 16.9745 21 12.0039 21C9.9675 21 3.00463 21 3.00463 21C3.00463 21 4.56382 17.2561 3.93982 16.0008C3.34076 14.7956 3.00391 13.4372 3.00391 12C3.00391 7.02944 7.03334 3 12.0039 3C16.9745 3 21.0039 7.02944 21.0039 12Z"
-            :stroke="props.botMsgColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+        <img src="../assets/icons/robot3.png" class="icon" alt="" />
       </button>
     </div>
   </div>
@@ -204,7 +115,7 @@ const isTextareaEmpty = computed(() => userInput.value.trim() === "");
   justify-content: flex-end;
   gap: 1rem;
 }
-.chatbot-wrapper.open{
+.chatbot-wrapper.open {
   inset: 0;
   margin: 0px;
   padding: 1rem;
@@ -219,73 +130,6 @@ const isTextareaEmpty = computed(() => userInput.value.trim() === "");
   overflow: hidden;
   width: 360px;
   height: 600px;
-}
-/* HEADER */
-.chatbot__header {
-  color: white;
-  padding: 0rem 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.header-title {
-  font-size: 1rem;
-}
-
-/* MESSAGES */
-.chatbot__messages {
-  overflow-y: scroll;
-  flex: 1;
-  padding: 0.5rem 0.7rem 0.5rem 0.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.message {
-  padding: 0.5rem;
-  border-radius: 0.3rem;
-  color: white;
-  word-wrap: break-word;
-  max-width: 80%;
-}
-.user {
-  align-self: flex-end;
-}
-.bot {
-  align-self: flex-start;
-}
-/* INPUT */
-.chatbot__input {
-  padding: 0.5rem;
-  display: flex;
-  gap: 0.5rem;
-}
-.input-wrapper {
-  display: flex;
-  padding: 0.5rem;
-  border-radius: 2rem;
-  flex: 1;
-  gap: 1rem;
-  transition: all 200ms ease;
-  position: relative;
-}
-.input-wrapper textarea {
-  height: 18px;
-  width: 100%;
-  outline: none;
-  border: none;
-  resize: none;
-  background-color: inherit;
-}
-.input-wrapper textarea:focus {
-  outline: none;
-  border: none;
-  resize: none;
-}
-
-.input-button {
-  border: none;
-  background-color: inherit;
 }
 
 /* OPEN CHATBOT */
@@ -305,4 +149,9 @@ const isTextareaEmpty = computed(() => userInput.value.trim() === "");
   width: 100%;
   transition: opacity all ease;
 }
+.icon{
+  width: 100%;
+  aspect-ratio: 1;
+}
+
 </style>

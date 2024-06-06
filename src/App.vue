@@ -1,9 +1,61 @@
 <script setup>
+import { ref } from "vue";
 import Chatbot from "./components/Chatbot.vue";
+
+const messages = ref([
+  {
+    id: Date.now(),
+    text: "What is the weather like today in Oslo?",
+    sender: "user",
+  },
+  {
+    id: Date.now() + 1,
+    text: "Can you help me debug my JavaScript code?",
+    sender: "bot",
+  },
+  { id: Date.now() + 2, text: "How do I center a div in CSS?", sender: "bot" },
+  {
+    id: Date.now() + 3,
+    text: "What are the best exercises for building upper body strength?",
+    sender: "user",
+  },
+  {
+    id: Date.now() + 4,
+    text:
+      "Can you suggest some good resources for learning frontend development?",
+    sender: "bot",
+  },
+  {
+    id: Date.now() + 5,
+    text: "How do I optimize my website for better performance?",
+    sender: "user",
+  },
+  {
+    id: Date.now() + 6,
+    text: "What are some healthy meal options for someone who works out a lot?",
+    sender: "bot",
+  },
+  {
+    id: Date.now() + 7,
+    text: "How do I prepare for my frontend development exams?",
+    sender: "user",
+  },
+  {
+    id: Date.now() + 8,
+    text:
+      "Can you explain the difference between let, var, and const in JavaScript?",
+    sender: "bot",
+  },
+  {
+    id: Date.now() + 9,
+    text: "What are some effective time management strategies for students?",
+    sender: "user",
+  },
+]);
 </script>
 
 <template>
-  <div style="padding: 20px; color: black">
+  <div style="padding: 20px; color: black;">
     <h1>
       Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla, laborum.
     </h1>
@@ -21,7 +73,7 @@ import Chatbot from "./components/Chatbot.vue";
       reiciendis dignissimos praesentium quam!
     </p>
   </div>
-  <div style="padding: 20px; color: black">
+  <div style="padding: 20px; color: black;">
     <h1>
       Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla, laborum.
     </h1>
@@ -39,7 +91,7 @@ import Chatbot from "./components/Chatbot.vue";
       reiciendis dignissimos praesentium quam!
     </p>
   </div>
-  <div style="padding: 20px; color: black">
+  <div style="padding: 20px; color: black;">
     <h1>
       Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla, laborum.
     </h1>
@@ -57,7 +109,7 @@ import Chatbot from "./components/Chatbot.vue";
       reiciendis dignissimos praesentium quam!
     </p>
   </div>
-  <div style="padding: 20px; color: black">
+  <div style="padding: 20px; color: black;">
     <h1>
       Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla, laborum.
     </h1>
@@ -80,6 +132,7 @@ import Chatbot from "./components/Chatbot.vue";
     primaryColor="var(--primary-clr)"
     secondaryColor="var(--secondary-clr)"
     botMsgColor="#f2f2f4"
+    :messages="messages"
   />
 </template>
 
