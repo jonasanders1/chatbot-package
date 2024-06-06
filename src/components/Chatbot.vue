@@ -4,16 +4,15 @@ import { ref, computed, defineProps } from "vue";
 import ChatbotMessageScreen from "./ChatbotMessageScreen.vue";
 import Header from "./Header.vue";
 import UserInput from "./UserInput.vue";
+import ChatbotButton from "./ChatbotButton.vue";
 
 const userInput = ref("");
 const isOpen = ref(false);
 const loading = ref(false);
 
 const props = defineProps({
-  title: String,
-  primaryColor: String,
-  secondaryColor: String,
-  botMsgColor: String,
+  chatbotTitle: String,
+  chatbotColors: Object,
   messages: Array,
 });
 
@@ -44,26 +43,11 @@ const sendMessage = () => {
       };
 
       props.messages.push(botResponse);
-      loading.value = false; // Set loading state to false
-    }, 2000); // 2 seconds delay to simulate fetch request
+      loading.value = false;
+    }, 2000);
   }
 };
 
-const headerStyles = {
-  backgroundColor: "#333",
-  color: "#fff",
-};
-
-const botMessageStyles = {
-  backgroundColor: props.botMsgColor,
-  color: "#333",
-};
-const userMessageStyles = {
-  backgroundColor: props.primaryColor,
-  color: "#fff",
-};
-
-// Computed property to check if the textarea is empty
 const isTextareaEmpty = computed(() => userInput.value.trim() === "");
 </script>
 
@@ -71,34 +55,26 @@ const isTextareaEmpty = computed(() => userInput.value.trim() === "");
   <div class="chatbot-wrapper" :class="isOpen ? 'open' : 'closed'">
     <div class="chatbot" v-if="isOpen">
       <Header
-        :title="title"
-        :headerStyles="headerStyles"
+        :title="props.chatbotTitle"
+        :colors="chatbotColors.headerColors"
         @toggleChat="handleToggleChat"
       />
       <ChatbotMessageScreen
         :messages="props.messages"
-        :botMessageStyles="botMessageStyles"
-        :userMessageStyles="userMessageStyles"
+        :messageColors="chatbotColors.messageColors"
       />
       <UserInput
         :userInput="userInput"
         @sendMessage="sendMessage"
         @input="handleInputChange"
+        :inputColors="chatbotColors.inputColors"
+        :isInputEmpty="isTextareaEmpty"
       />
     </div>
-
-    <div class="open-chatbot">
-      <button
-        @click="handleToggleChat"
-        class="open-chat-btn"
-        :style="{
-          backgroundColor: props.primaryColor,
-          opacity: isOpen ? 1 : 0.8,
-        }"
-      >
-        <img src="../assets/icons/robot3.png" class="icon" alt="" />
-      </button>
-    </div>
+    <ChatbotButton
+      @toggleChat="handleToggleChat"
+      :colors="chatbotColors.chatbotButtonColors"
+    />
   </div>
 </template>
 
@@ -133,25 +109,4 @@ const isTextareaEmpty = computed(() => userInput.value.trim() === "");
 }
 
 /* OPEN CHATBOT */
-.open-chatbot {
-  height: 70px;
-  width: 70px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  overflow: hidden;
-}
-.open-chat-btn {
-  border-radius: 50%;
-  border: none;
-  height: 100%;
-  width: 100%;
-  transition: opacity all ease;
-}
-.icon{
-  width: 100%;
-  aspect-ratio: 1;
-}
-
 </style>

@@ -1,14 +1,23 @@
 <script setup>
-import { ref, watch, defineProps, defineEmits } from "vue";
+import {
+  ref,
+  watch,
+  defineProps,
+  defineEmits,
+  onMounted,
+  onUpdated,
+} from "vue";
 
 const props = defineProps({
-  borderColor: String,
   userInput: String,
+  inputColors: Object,
+  isInputEmpty: Boolean,
 });
 
 const emit = defineEmits(["input", "sendMessage"]);
 
 const inputValue = ref(props.userInput);
+const textareaRef = ref(null);
 
 watch(
   () => props.userInput,
@@ -19,24 +28,56 @@ watch(
 
 const updateInput = () => {
   emit("input", inputValue.value);
+  adjustTextareaHeight();
 };
 
 const handleSendMessage = () => {
   emit("sendMessage");
 };
+
+const adjustTextareaHeight = () => {
+  const textarea = textareaRef.value;
+  if (textarea) {
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  }
+};
+
+const focusTextarea = () => {
+  if (textareaRef.value) {
+    textareaRef.value.focus();
+  }
+};
+
+onMounted(() => {
+  adjustTextareaHeight();
+  focusTextarea();
+});
+
+onUpdated(() => {
+  focusTextarea();
+});
 </script>
 
 <template>
   <div class="chatbot__input">
-    <div class="input-wrapper" :style="{ backgroundColor: props.borderColor }">
+    <div
+      class="input-wrapper"
+      :style="{ backgroundColor: props.inputColors.inputBgColor }"
+    >
       <textarea
+        ref="textareaRef"
         type="text"
         placeholder="Type a message"
         v-model="inputValue"
         @input="updateInput"
       />
     </div>
-    <button class="input-button" @click="handleSendMessage">
+    <button
+      class="input-button"
+      v-if="!props.isInputEmpty"
+      @click="handleSendMessage"
+    >
       send
     </button>
   </div>
@@ -51,18 +92,20 @@ const handleSendMessage = () => {
 .input-wrapper {
   display: flex;
   padding: 0.5rem;
-  border-radius: 2rem;
+  border-radius: 1.5rem;
   flex: 1;
   gap: 1rem;
   transition: all 200ms ease;
   position: relative;
 }
 .input-wrapper textarea {
-  height: 18px;
+  height: auto;
+  max-height: 100px;
   width: 100%;
   outline: none;
   border: none;
   resize: none;
+  overflow: hidden;
   background-color: inherit;
 }
 .input-wrapper textarea:focus {

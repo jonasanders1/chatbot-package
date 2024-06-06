@@ -1,9 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
-
-body{
-  background-color: rgb(227, 227, 227);
+body {
+  background-color: rgb(59, 59, 59);
   color: black;
   font-family: "Montserrat", sans-serif;
   display: flex;
@@ -12,7 +10,7 @@ body{
   height: 100vh;
 }
 
-:root{
+:root {
   --primary-clr: hsl(209, 23%, 22%);
-  --secondary-clr:  hsl(207, 26%, 17%);
+  --secondary-clr: hsl(207, 26%, 17%);
 }
