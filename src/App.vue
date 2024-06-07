@@ -75,7 +75,7 @@ const colors = {
   headerColors,
   messageColors,
   inputColors,
-  chatbotButtonColors
+  chatbotButtonColors,
 };
 </script>
 

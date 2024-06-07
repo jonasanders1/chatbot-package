@@ -62,7 +62,7 @@ onUpdated(() => {
 <template>
   <div class="chatbot__input">
     <div
-      class="input-wrapper"
+      class="chatbot__input-wrapper"
       :style="{ backgroundColor: props.inputColors.inputBgColor }"
     >
       <textarea
@@ -71,10 +71,11 @@ onUpdated(() => {
         placeholder="Type a message"
         v-model="inputValue"
         @input="updateInput"
+        class="chatbot__textarea"
       />
     </div>
     <button
-      class="input-button"
+      class="chatbot__input-button"
       v-if="!props.isInputEmpty"
       @click="handleSendMessage"
     >
@@ -89,7 +90,7 @@ onUpdated(() => {
   display: flex;
   gap: 0.5rem;
 }
-.input-wrapper {
+.chatbot__input-wrapper {
   display: flex;
   padding: 0.5rem;
   border-radius: 1.5rem;
@@ -98,7 +99,7 @@ onUpdated(() => {
   transition: all 200ms ease;
   position: relative;
 }
-.input-wrapper textarea {
+.chatbot__textarea {
   height: auto;
   max-height: 100px;
   width: 100%;
@@ -108,13 +109,12 @@ onUpdated(() => {
   overflow: hidden;
   background-color: inherit;
 }
-.input-wrapper textarea:focus {
+.chatbot__textarea:focus {
   outline: none;
   border: none;
   resize: none;
 }
-
-.input-button {
+.chatbot__input-button {
   border: none;
   background-color: inherit;
 }

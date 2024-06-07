@@ -10,7 +10,3 @@ body {
   height: 100vh;
 }
 
-:root {
-  --primary-clr: hsl(209, 23%, 22%);
-  --secondary-clr: hsl(207, 26%, 17%);
-}

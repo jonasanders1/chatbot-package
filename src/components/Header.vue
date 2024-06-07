@@ -10,7 +10,8 @@ const handleToggleChat = () => {
   emits("toggleChat");
 };
 </script>
-<template lang="">
+
+<template>
   <div
     class="chatbot__header"
     :style="{
@@ -18,18 +19,20 @@ const handleToggleChat = () => {
       color: props.colors.textColor,
     }"
   >
-    <h1 class="header-title">
+    <h1 class="chatbot__header-title">
       {{ props.title ? props.title : "Chatbot" }}
     </h1>
-    <div class="header-buttons">
-      <button @click="handleToggleChat" class="close-btn">
-        <img src="../assets/icons/close.png" class="icon" />
+    <div class="chatbot__header-buttons">
+      <button @click="handleToggleChat" class="chatbot__close-btn">
+        <img src="../assets/icons/close.png" class="chatbot__close-icon" />
       </button>
     </div>
   </div>
 </template>
+
 <style scoped>
 .chatbot__header {
+  border-radius: 0.3rem 0.3rem 0rem 0rem;
   color: white;
   padding: 0rem 0.5rem;
   display: flex;
@@ -47,10 +50,10 @@ const handleToggleChat = () => {
   left: 0px;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
 }
-.header-title {
+.chatbot__header-title {
   font-size: 1rem;
 }
-.close-btn {
+.chatbot__close-btn {
   height: 40px;
   aspect-ratio: 1;
   background-color: inherit;
@@ -58,11 +61,11 @@ const handleToggleChat = () => {
   opacity: 0.8;
   transition: all 200ms ease;
 }
-.close-btn:focus,
-.close-btn:hover {
+.chatbot__close-btn:focus,
+.chatbot__close-btn:hover {
   opacity: 1;
 }
-.icon {
+.chatbot__close-icon {
   width: 100%;
 }
 </style>

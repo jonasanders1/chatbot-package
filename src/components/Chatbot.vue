@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, defineProps } from "vue";
+import { ref, computed } from "vue";
 
 import ChatbotMessageScreen from "./ChatbotMessageScreen.vue";
 import Header from "./Header.vue";
@@ -52,8 +52,8 @@ const isTextareaEmpty = computed(() => userInput.value.trim() === "");
 </script>
 
 <template>
-  <div class="chatbot-wrapper" :class="isOpen ? 'open' : 'closed'">
-    <div class="chatbot" v-if="isOpen">
+  <div class="chatbot" :class="isOpen ? 'chatbot--open' : 'chatbot--closed'">
+    <div class="chatbot__content" v-if="isOpen">
       <Header
         :title="props.chatbotTitle"
         :colors="chatbotColors.headerColors"
@@ -79,8 +79,7 @@ const isTextareaEmpty = computed(() => userInput.value.trim() === "");
 </template>
 
 <style scoped>
-/* Wrappers */
-.chatbot-wrapper {
+.chatbot {
   position: fixed;
   right: 0;
   bottom: 0;
@@ -91,22 +90,19 @@ const isTextareaEmpty = computed(() => userInput.value.trim() === "");
   justify-content: flex-end;
   gap: 1rem;
 }
-.chatbot-wrapper.open {
+.chatbot--open {
   inset: 0;
   margin: 0px;
   padding: 1rem;
   background-color: rgba(0, 0, 0, 0.5);
 }
-
-.chatbot {
+/* Chatbot Content Element */
+.chatbot__content {
   background-color: white;
   display: flex;
   flex-direction: column;
   border-radius: 0.3rem;
-  overflow: hidden;
   width: 360px;
   height: 600px;
 }
-
-/* OPEN CHATBOT */
 </style>
