@@ -1,6 +1,7 @@
 <script setup>
+import { useCssModule } from "vue";
 const emits = defineEmits(["toggleChat"]);
-
+const $style = useCssModule();
 const props = defineProps({
   colors: Object,
 });
@@ -10,21 +11,21 @@ const handleToggleChat = () => {
 };
 </script>
 <template>
-  <div class="chat-button-container">
+  <div :class="$style['chat-button-container']">
     <button
       @click="handleToggleChat"
-      class="open-chat-btn"
+      :class="$style['open-chat-btn']"
       :style="{
         backgroundColor: props.colors.backgroundColor,
         opacity: isOpen ? 1 : 0.8,
       }"
     >
-      <img src="../assets/icons/robot3.png" class="icon" alt="" />
+      <img src="../assets/icons/robot3.png" :class="$style.icon" />
     </button>
   </div>
 </template>
 
-<style scoped>
+<style module>
 .chat-button-container {
   height: 70px;
   width: 70px;

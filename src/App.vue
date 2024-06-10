@@ -87,4 +87,3 @@ const colors = {
   />
 </template>
 
-<style scoped></style>

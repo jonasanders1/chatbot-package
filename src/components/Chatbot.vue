@@ -1,14 +1,16 @@
 <script setup>
-import { ref, computed } from "vue";
-
+import { ref, computed, useCssModule } from "vue";
 import ChatbotMessageScreen from "./ChatbotMessageScreen.vue";
 import Header from "./Header.vue";
 import UserInput from "./UserInput.vue";
 import ChatbotButton from "./ChatbotButton.vue";
 
+
 const userInput = ref("");
 const isOpen = ref(false);
 const loading = ref(false);
+
+const $style = useCssModule();
 
 const props = defineProps({
   chatbotTitle: String,
@@ -52,8 +54,8 @@ const isTextareaEmpty = computed(() => userInput.value.trim() === "");
 </script>
 
 <template>
-  <div class="chatbot" :class="isOpen ? 'chatbot--open' : 'chatbot--closed'">
-    <div class="chatbot__content" v-if="isOpen">
+  <div :class="[$style.chatbot, isOpen ? $style['chatbot--open'] : '']">
+    <div :class="$style.chatbot__content" v-if="isOpen">
       <Header
         :title="props.chatbotTitle"
         :colors="chatbotColors.headerColors"
@@ -78,7 +80,7 @@ const isTextareaEmpty = computed(() => userInput.value.trim() === "");
   </div>
 </template>
 
-<style scoped>
+<style module>
 .chatbot {
   position: fixed;
   right: 0;
@@ -96,7 +98,6 @@ const isTextareaEmpty = computed(() => userInput.value.trim() === "");
   padding: 1rem;
   background-color: rgba(0, 0, 0, 0.5);
 }
-/* Chatbot Content Element */
 .chatbot__content {
   background-color: white;
   display: flex;

@@ -1,15 +1,12 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
-
+import path from "path";
 export default defineConfig({
-  plugins: [vue(), cssInjectedByJsPlugin()],
   build: {
     lib: {
-      entry: "./src/components/Chatbot.vue",
+      entry: path.resolve(__dirname, "src/index.js"),
       name: "Chatbot",
       fileName: (format) => `chatbot.${format}.js`,
-      formats: ["es", "umd"],
     },
     rollupOptions: {
       external: ["vue"],
@@ -20,7 +17,5 @@ export default defineConfig({
       },
     },
   },
-  server: {
-    open: true,
-  },
+  plugins: [vue()],
 });

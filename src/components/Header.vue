@@ -1,9 +1,10 @@
 <script setup>
+import { useCssModule } from "vue";
 const props = defineProps({
   colors: Object,
   title: String,
 });
-
+const $style = useCssModule();
 const emits = defineEmits(["toggleChat"]);
 
 const handleToggleChat = () => {
@@ -13,24 +14,27 @@ const handleToggleChat = () => {
 
 <template>
   <div
-    class="chatbot__header"
+    :class="$style.chatbot__header"
     :style="{
       backgroundColor: props.colors.backgroundColor,
       color: props.colors.textColor,
     }"
   >
-    <h1 class="chatbot__header-title">
+    <h1 :class="$style['chatbot__header-title']">
       {{ props.title ? props.title : "Chatbot" }}
     </h1>
-    <div class="chatbot__header-buttons">
-      <button @click="handleToggleChat" class="chatbot__close-btn">
-        <img src="../assets/icons/close.png" class="chatbot__close-icon" />
+    <div :class="$style['chatbot__header-buttons']">
+      <button @click="handleToggleChat" :class="$style['chatbot__close-btn']">
+        <img
+          src="../assets/icons/close.png"
+          :class="$style['chatbot__close-icon']"
+        />
       </button>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style module>
 .chatbot__header {
   border-radius: 0.3rem 0.3rem 0rem 0rem;
   color: white;
@@ -52,6 +56,10 @@ const handleToggleChat = () => {
 }
 .chatbot__header-title {
   font-size: 1rem;
+}
+.chatbot__header-buttons {
+  display: flex;
+  align-items: center;
 }
 .chatbot__close-btn {
   height: 40px;

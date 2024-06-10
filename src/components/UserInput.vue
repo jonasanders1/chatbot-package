@@ -6,6 +6,7 @@ import {
   defineEmits,
   onMounted,
   onUpdated,
+  useCssModule,
 } from "vue";
 
 const props = defineProps({
@@ -13,7 +14,7 @@ const props = defineProps({
   inputColors: Object,
   isInputEmpty: Boolean,
 });
-
+const $style = useCssModule();
 const emit = defineEmits(["input", "sendMessage"]);
 
 const inputValue = ref(props.userInput);
@@ -60,9 +61,9 @@ onUpdated(() => {
 </script>
 
 <template>
-  <div class="chatbot__input">
+  <div :class="$style['chatbot__input']">
     <div
-      class="chatbot__input-wrapper"
+      :class="$style['chatbot__input-wrapper']"
       :style="{ backgroundColor: props.inputColors.inputBgColor }"
     >
       <textarea
@@ -71,11 +72,11 @@ onUpdated(() => {
         placeholder="Type a message"
         v-model="inputValue"
         @input="updateInput"
-        class="chatbot__textarea"
+        :class="$style['chatbot__textarea']"
       />
     </div>
     <button
-      class="chatbot__input-button"
+      :class="$style['chatbot__input-button']"
       v-if="!props.isInputEmpty"
       @click="handleSendMessage"
     >
@@ -84,7 +85,7 @@ onUpdated(() => {
   </div>
 </template>
 
-<style scoped>
+<style module>
 .chatbot__input {
   padding: 0.5rem;
   display: flex;

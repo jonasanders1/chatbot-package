@@ -1,6 +1,7 @@
 <script setup>
-import { defineProps, onUpdated, ref } from "vue";
+import { defineProps, onUpdated, ref, useCssModule } from "vue";
 
+const $style = useCssModule();
 const props = defineProps({
   messages: {
     type: Array,
@@ -25,15 +26,15 @@ onUpdated(scrollToBottom);
 </script>
 
 <template>
-  <div class="chatbot__messages" ref="messageContainer">
+  <div :class="$style['chatbot__messages']" ref="messageContainer">
     <div
       v-for="message in messages"
       :key="message.id"
       :class="[
-        'chatbot__message',
+        $style['chatbot__message'],
         message.sender === 'user'
-          ? 'chatbot__message--user'
-          : 'chatbot__message--bot',
+          ? $style['chatbot__message--user']
+          : $style['chatbot__message--bot'],
       ]"
       :style="
         message.sender === 'user'
@@ -52,7 +53,7 @@ onUpdated(scrollToBottom);
   </div>
 </template>
 
-<style scoped>
+<style module>
 .chatbot__messages {
   overflow-y: scroll;
   flex: 1;
